@@ -31,14 +31,17 @@ export default function ParticlesBackground() {
           },
           links: {
             enable: true,
-            distance: 160,
+            distance: 150,
             color: "#00F5D4",
             opacity: 0.6,
             width: 1,
           },
           move: {
             enable: true,
-            speed: 2,
+            speed: 0.8,
+            outModes: {
+              default: "bounce",
+            },
           },
           size: {
             value: { min: 2, max: 5 },
