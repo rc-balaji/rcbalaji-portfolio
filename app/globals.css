@@ -1,6 +1,59 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600&display=swap");
 @import "tailwindcss";
 
-@keyframes gradientMove {
+:root {
+  --cyan: #00f5d4;
+  --purple: #9b5de5;
+  --dark: #030712;
+}
+
+* {
+  cursor: none;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Rajdhani", sans-serif;
+  background: var(--dark);
+}
+
+/* ── Scanline overlay ── */
+.scanlines::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.07) 2px,
+    rgba(0, 0, 0, 0.07) 4px
+  );
+  pointer-events: none;
+  z-index: 200;
+}
+
+/* ── Noise texture ── */
+.noise::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 199;
+}
+
+/* ── Grid background ── */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(0, 245, 212, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 245, 212, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ── Gradient animation ── */
+@keyframes gradientShift {
   0% {
     background-position: 0% 50%;
   }
@@ -11,42 +64,172 @@
     background-position: 0% 50%;
   }
 }
-
 .animate-gradient {
   background-size: 200% 200%;
-  animation: gradientMove 6s ease infinite;
+  animation: gradientShift 6s ease infinite;
 }
 
-.hero-focus {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at center,
-    rgba(0, 0, 0, 0.2) 0%,
-    rgba(0, 0, 0, 0.5) 50%,
-    rgba(0, 0, 0, 0.85) 100%
-  );
-  pointer-events: none;
-}
-
-* {
-  cursor: none;
-}
-
+/* ── Profile rings ── */
 @keyframes spinSlow {
-  from {
-    transform: rotate(0deg);
-  }
   to {
     transform: rotate(360deg);
   }
 }
+@keyframes spinReverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@keyframes pulseRing {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.06);
+  }
+}
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+.float-animation {
+  animation: floatY 4s ease-in-out infinite;
+}
 
-.profile-ring {
+/* ── Status dot pulse ── */
+@keyframes statusPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 245, 212, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(0, 245, 212, 0);
+  }
+}
+.status-dot {
+  animation: statusPulse 2s infinite;
+}
+
+/* ── Typewriter cursor blink ── */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+.tw-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--cyan);
+  vertical-align: middle;
+  margin-left: 3px;
+  animation: blink 1s infinite;
+}
+
+/* ── Reveal on load ── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reveal {
+  opacity: 0;
+  animation: fadeUp 0.7s ease forwards;
+}
+.delay-1 {
+  animation-delay: 0.1s;
+}
+.delay-2 {
+  animation-delay: 0.25s;
+}
+.delay-3 {
+  animation-delay: 0.45s;
+}
+.delay-4 {
+  animation-delay: 0.65s;
+}
+.delay-5 {
+  animation-delay: 0.85s;
+}
+.delay-6 {
+  animation-delay: 1.05s;
+}
+
+/* ── Skill bar fill ── */
+@keyframes fillBar {
+  from {
+    width: 0;
+  }
+}
+.skill-bar {
+  animation: fillBar 1.4s ease forwards;
+  animation-delay: 0.8s;
+}
+
+/* ── Button sweep ── */
+.btn-sweep::after {
+  content: "";
   position: absolute;
-  width: 130px;
-  height: 130px;
-  border: 2px solid rgba(0, 255, 255, 0.4);
-  border-radius: 50%;
-  animation: spinSlow 12s linear infinite;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  transition: width 0.35s ease;
+}
+.btn-sweep:hover::after {
+  width: 100%;
+}
+.btn-cyan::after {
+  background: var(--cyan);
+}
+.btn-purple::after {
+  background: var(--purple);
+}
+
+/* ── Corner HUD brackets ── */
+.hud-bracket {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+}
+.hud-tl {
+  top: 12px;
+  left: 12px;
+  border-top: 1.5px solid rgba(0, 245, 212, 0.5);
+  border-left: 1.5px solid rgba(0, 245, 212, 0.5);
+}
+.hud-tr {
+  top: 12px;
+  right: 12px;
+  border-top: 1.5px solid rgba(0, 245, 212, 0.5);
+  border-right: 1.5px solid rgba(0, 245, 212, 0.5);
+}
+.hud-bl {
+  bottom: 12px;
+  left: 12px;
+  border-bottom: 1.5px solid rgba(0, 245, 212, 0.5);
+  border-left: 1.5px solid rgba(0, 245, 212, 0.5);
+}
+.hud-br {
+  bottom: 12px;
+  right: 12px;
+  border-bottom: 1.5px solid rgba(0, 245, 212, 0.5);
+  border-right: 1.5px solid rgba(0, 245, 212, 0.5);
 }
