@@ -6,12 +6,31 @@ export default function CustomCursor() {
   const [trail, setTrail] = useState({ x: -100, y: -100 });
   const [hov, setHov] = useState(false);
   const ref = useRef({ x: -100, y: -100 });
+  const audioRef = useRef(null);
 
   useEffect(() => {
+    // Prepare sound
+    const audio = new Audio("/curson_sound.mp3");
+    audio.volume = 0.2; // adjust loudness 0–1
+    audioRef.current = audio;
+
+    let lastPlay = 0;
+    const MIN_INTERVAL = 120; // ms – avoid spam
+
     const move = (e) => {
       ref.current = { x: e.clientX, y: e.clientY };
       setPos({ x: e.clientX, y: e.clientY });
+
+      const now = performance.now ? performance.now() : Date.now();
+      if (audioRef.current && now - lastPlay > MIN_INTERVAL) {
+        lastPlay = now;
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch(() => {
+          // ignore autoplay errors
+        });
+      }
     };
+
     window.addEventListener("mousemove", move);
 
     let raf;
@@ -26,7 +45,8 @@ export default function CustomCursor() {
 
     const onEnter = () => setHov(true);
     const onLeave = () => setHov(false);
-    document.querySelectorAll("button,a,[data-hover]").forEach((el) => {
+    const hoverEls = document.querySelectorAll("button,a,[data-hover]");
+    hoverEls.forEach((el) => {
       el.addEventListener("mouseenter", onEnter);
       el.addEventListener("mouseleave", onLeave);
     });
@@ -34,6 +54,10 @@ export default function CustomCursor() {
     return () => {
       window.removeEventListener("mousemove", move);
       cancelAnimationFrame(raf);
+      hoverEls.forEach((el) => {
+        el.removeEventListener("mouseenter", onEnter);
+        el.removeEventListener("mouseleave", onLeave);
+      });
     };
   }, []);
 
@@ -48,7 +72,9 @@ export default function CustomCursor() {
         }}
       >
         <div
-          className={`rounded-full bg-cyan-400 transition-all duration-150 ${hov ? "w-3 h-3" : "w-2 h-2"}`}
+          className={`rounded-full bg-cyan-400 transition-all duration-150 ${
+            hov ? "w-3 h-3" : "w-2 h-2"
+          }`}
           style={{
             boxShadow:
               "0 0 12px rgba(0,245,212,1), 0 0 24px rgba(0,245,212,0.5)",
@@ -61,7 +87,9 @@ export default function CustomCursor() {
         style={{ transform: `translate(${trail.x - 20}px, ${trail.y - 20}px)` }}
       >
         <div
-          className={`rounded-full border border-cyan-400/50 transition-all duration-200 ${hov ? "w-12 h-12 border-cyan-400/80" : "w-10 h-10"}`}
+          className={`rounded-full border border-cyan-400/50 transition-all duration-200 ${
+            hov ? "w-12 h-12 border-cyan-400/80" : "w-10 h-10"
+          }`}
           style={{ boxShadow: "0 0 10px rgba(0,245,212,0.25)" }}
         />
       </div>
