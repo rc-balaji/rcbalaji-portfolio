@@ -200,9 +200,9 @@ export default function HeroSection() {
 
             {/* The actual image — NO clip, NO border-radius */}
             <img
-              src="/profile.png"
+              src="/future.png"
               alt="RC Balaji"
-              className="relative w-full h-full object-contain drop-shadow-2xl"
+              className="relative w-full h-[400px] object-contain drop-shadow-2xl"
               style={{
                 filter:
                   "drop-shadow(0 0 32px rgba(0,245,212,0.55)) drop-shadow(0 8px 40px rgba(0,245,212,0.2))",
