@@ -44,5 +44,16 @@ export default function GlitchText({ text, className }) {
     return () => clearInterval(trigger);
   }, [text]);
 
-  return <span className={className}>{display}</span>;
+  return (
+    <span
+      className={className}
+      style={{
+        whiteSpace: "nowrap",
+        display: "inline-block",
+        minWidth: `${text.length}ch`,
+      }}
+    >
+      {display}
+    </span>
+  );
 }

@@ -157,34 +157,55 @@ export default function HeroSection() {
 
         {/* ── Center content ── */}
         <div className="text-center flex flex-col items-center max-w-2xl w-full">
-          {/* Profile image */}
-          <div className="relative w-36 h-36 mx-auto mb-8 float-animation reveal delay-1">
+          {/* Profile image — frameless, large, glowing */}
+          <div
+            className="relative mx-auto mb-6 reveal delay-1 float-animation"
+            style={{
+              width: "clamp(180px, 28vw, 320px)",
+              height: "clamp(180px, 28vw, 320px)",
+            }}
+          >
+            {/* Deep glow pool beneath the figure */}
             <div
-              className="absolute inset-0 rounded-full blur-2xl scale-150"
-              style={{ background: "rgba(0,245,212,0.15)" }}
-            />
-            {/* Ring 1 */}
-            <div
-              className="absolute -inset-3 rounded-full border border-dashed border-cyan-400/30"
-              style={{ animation: "spinSlow 18s linear infinite" }}
-            />
-            {/* Ring 2 */}
-            <div
-              className="absolute -inset-6 rounded-full border border-dotted border-purple-500/20"
-              style={{ animation: "spinSlow 12s linear infinite reverse" }}
-            />
-            {/* Ring 3 pulse */}
-            <div
-              className="absolute -inset-1 rounded-full border border-cyan-400/60"
-              style={{ animation: "pulseRing 3s ease-in-out infinite" }}
-            />
-            <img
-              src="/profile2.png"
-              alt="RC Balaji"
-              className="relative w-36 h-36 rounded-full object-cover border-2 border-cyan-400"
+              className="absolute bottom-0 left-1/2 -translate-x-1/2"
               style={{
-                boxShadow:
-                  "0 0 30px rgba(0,245,212,0.5), 0 0 60px rgba(0,245,212,0.15)",
+                width: "80%",
+                height: "40%",
+                background:
+                  "radial-gradient(ellipse, rgba(0,245,212,0.35) 0%, transparent 70%)",
+                filter: "blur(18px)",
+                borderRadius: "50%",
+              }}
+            />
+
+            {/* Ambient halo behind figure */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(circle at 50% 60%, rgba(0,245,212,0.12) 0%, rgba(155,93,229,0.08) 50%, transparent 75%)",
+                filter: "blur(24px)",
+              }}
+            />
+
+            {/* Outer orbit ring — decorative only */}
+            <div
+              className="absolute -inset-6 rounded-full border border-dashed border-cyan-400/20"
+              style={{ animation: "spinSlow 22s linear infinite" }}
+            />
+            <div
+              className="absolute -inset-10 rounded-full border border-dotted border-purple-500/10"
+              style={{ animation: "spinSlow 16s linear infinite reverse" }}
+            />
+
+            {/* The actual image — NO clip, NO border-radius */}
+            <img
+              src="/profile.png"
+              alt="RC Balaji"
+              className="relative w-full h-full object-contain drop-shadow-2xl"
+              style={{
+                filter:
+                  "drop-shadow(0 0 32px rgba(0,245,212,0.55)) drop-shadow(0 8px 40px rgba(0,245,212,0.2))",
               }}
             />
           </div>
